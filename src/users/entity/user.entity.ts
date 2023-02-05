@@ -6,6 +6,9 @@ export class User {
   id: number;
 
   @Column()
+  user_id: number;
+
+  @Column()
   email: string;
 
   @Column()
@@ -17,7 +20,9 @@ export class User {
   @Column()
   updated_at: number;
 
-  @Column({ default: true })
-  is_deleted: boolean;
+  @Column()
+  is_deleted: number;
 
+  @Column()
+  password: string;
 }
