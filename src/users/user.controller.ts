@@ -60,6 +60,9 @@ export class UserController {
     user.updated_at = new Date().getTime();
     user.user_id = 0;
     user.is_deleted = 0;
+    user.phone_number = '0292929';
+    user.updated_at = 0;
+    user.password = createUserDto.password;
 
     const userSaved = await this.usersService.createUser(user);
     console.log('saved: ', userSaved);

@@ -15,6 +15,7 @@ import { UserModule } from './users/user.module';
       password: 'root',
       database: 'mydb',
       entities: [User],
+      synchronize: true,
     }),
     UserModule,
   ],
