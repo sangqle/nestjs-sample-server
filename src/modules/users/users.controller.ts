@@ -1,8 +1,6 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { JwtAuthGuard } from 'src/modules/auth/jwt-auth.guard';
-import { Roles } from 'src/decorators/role/roles.decorator';
-import { Role } from 'src/enums/role.enum';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -15,5 +13,10 @@ export class UsersController {
   @Get(':id')
   async getByUserId(@Param('id') id: number) {
     return this.userService.findOneById({ id });
+  }
+
+  @Post()
+  async creatUser(@Body() createUserDto: CreateUserDto) {
+    return this.userService.create(createUserDto);
   }
 }

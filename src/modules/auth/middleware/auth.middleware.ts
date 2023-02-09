@@ -24,14 +24,12 @@ export class AuthMiddleware implements NestMiddleware {
 
     try {
       const payload = verify(accessToken, 'this_is_secret');
-      console.log('Call verify token with payload: ', payload);
       const id = payload;
       user = await this.userService.findOneById({ id });
     } catch (error) {
       console.log('error: ', error);
       throw new ForbiddenException('Please register or sign in.');
     }
-
     if (user) {
       req.user = user;
     }

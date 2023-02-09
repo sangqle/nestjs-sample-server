@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Long } from 'typeorm';
 
 @Entity()
 export class User {
@@ -21,7 +21,7 @@ export class User {
   updated_at: number;
 
   @Column()
-  is_deleted: number;
+  is_deleted: boolean;
 
   @Column()
   password: string;
