@@ -11,35 +11,32 @@ export class UsersService {
     private readonly usersRepository: Repository<User>,
   ) {}
 
-  private readonly users = [
-    {
-      userId: 1,
-      username: 'john',
-      password: 'changeme',
-    },
-    {
-      userId: 2,
-      username: 'maria',
-      password: 'guess',
-    },
-  ];
-
   async create(createUserDto: CreateUserDto) {
-    const user = new User();
-    user.user_id = createUserDto.userId;
-    user.username = createUserDto.username;
-    user.email = createUserDto.email;
-    user.phone_number = createUserDto.phoneNumber;
-    user.password = createUserDto.password;
-    user.updated_at = new Date().getTime();
-    user.is_deleted = false;
-
-    return this.usersRepository.save(user);
+    let user = null;
+    try {
+      user = new User();
+      user.user_id = createUserDto.userId;
+      user.username = createUserDto.username;
+      user.email = createUserDto.email;
+      user.phone_number = createUserDto.phoneNumber;
+      user.password = createUserDto.password;
+      user.updated_at = new Date().getTime();
+      user.is_deleted = false;
+      user = await this.usersRepository.save(user);
+      console.log('user: ', user);
+    } catch (error) {
+      console.log(error);
+      user = null;
+    }
+    return user;
   }
 
-  async findOneById(query) {
-    const id = query.id;
-    return this.users[id];
+  async findOneById(id) {
+    return this.usersRepository.findOne({
+      where: {
+        id,
+      },
+    });
   }
 
   async findAll(): Promise<User[]> {

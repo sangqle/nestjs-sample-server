@@ -9,5 +9,5 @@ export const MySQLConfig: TypeOrmModuleOptions = {
   password: 'root',
   database: 'test',
   entities: [User],
-  synchronize: true,
+  synchronize: false,
 };

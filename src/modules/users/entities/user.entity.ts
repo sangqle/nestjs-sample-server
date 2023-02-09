@@ -1,6 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, Long } from 'typeorm';
-
+import { Entity, Column, PrimaryGeneratedColumn, Long, Unique } from 'typeorm';
 @Entity()
+@Unique(['username'])
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -25,4 +25,10 @@ export class User {
 
   @Column()
   password: string;
+
+  toJSonResponse() {
+    delete this['password'];
+    delete this['is_deleted'];
+    return this;
+  }
 }
