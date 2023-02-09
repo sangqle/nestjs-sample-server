@@ -6,17 +6,19 @@ import {
 } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PostsModule } from './posts/posts.module';
-import { UsersModule } from './users/users.module';
-import { AuthModule } from './auth/auth.module';
-import { AuthController } from './auth/auth.controller';
-import { UsersController } from './users/users.controller';
-import { AuthMiddleware } from './auth/middleware/auth.middleware';
+import { PostsModule } from './modules/posts/posts.module';
+import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { AuthController } from './modules/auth/auth.controller';
+import { UsersController } from './modules/users/users.controller';
+import { AuthMiddleware } from './modules/auth/middleware/auth.middleware';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './modules/auth/jwt-auth.guard';
 
 @Module({
   imports: [UsersModule, PostsModule, AuthModule],
   controllers: [AppController, AuthController, UsersController],
-  providers: [AppService],
+  providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

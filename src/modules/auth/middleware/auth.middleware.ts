@@ -1,7 +1,6 @@
 import { ForbiddenException, Injectable, NestMiddleware } from '@nestjs/common';
 import { verify } from 'jsonwebtoken';
 import { UsersService } from '../../users/users.service';
-import { JWTPayload } from '../interfaces/jwtPayload.interface';
 
 /** The AuthMiddleware is used to
  * (1) read the request header bearer token/user access token
@@ -24,11 +23,12 @@ export class AuthMiddleware implements NestMiddleware {
     }
 
     try {
-      const payload = verify(accessToken, 'secret');
-      console.log('payload: ', payload);
+      const payload = verify(accessToken, 'this_is_secret');
+      console.log('Call verify token with payload: ', payload);
       const id = payload;
       user = await this.userService.findOneById({ id });
     } catch (error) {
+      console.log('error: ', error);
       throw new ForbiddenException('Please register or sign in.');
     }
 
