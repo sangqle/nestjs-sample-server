@@ -4,21 +4,23 @@ import {
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { PostsModule } from './modules/posts/posts.module';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { AuthController } from './modules/auth/auth.controller';
-import { UsersController } from './modules/users/users.controller';
 import { AuthMiddleware } from './modules/auth/middleware/auth.middleware';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './modules/auth/jwt-auth.guard';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { MySQLConfig } from './config/mysql.config';
 
 @Module({
-  imports: [UsersModule, PostsModule, AuthModule],
-  controllers: [AppController, AuthController, UsersController],
-  providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }],
+  imports: [
+    TypeOrmModule.forRoot(MySQLConfig),
+    UsersModule,
+    PostsModule,
+    AuthModule,
+  ],
+  providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
