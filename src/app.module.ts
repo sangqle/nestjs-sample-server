@@ -1,4 +1,5 @@
 import {
+  Injectable,
   MiddlewareConsumer,
   Module,
   NestModule,
@@ -11,11 +12,24 @@ import { AuthMiddleware } from './modules/auth/middleware/auth.middleware';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './modules/auth/jwt-auth.guard';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { MySQLConfig } from './config/mysql.config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import AppConfig from './config/app.config';
+import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(MySQLConfig),
+    ConfigModule.forRoot({
+      load: [AppConfig],
+      isGlobal: true,
+      expandVariables: true,
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => {
+        return configService.get<MysqlConnectionOptions>('my_sql_database');
+      },
+      inject: [ConfigService],
+    }),
     UsersModule,
     PostsModule,
     AuthModule,
