@@ -19,14 +19,17 @@ import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOpti
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [AppConfig],
       isGlobal: true,
+      envFilePath: [
+        `${process.cwd()}/src/config/env/${process.env.NODE_ENV}.env`,
+      ],
+      load: [AppConfig],
       expandVariables: true,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
-        return configService.get<MysqlConnectionOptions>('my_sql_database');
+        return configService.get<MysqlConnectionOptions>('database');
       },
       inject: [ConfigService],
     }),
