@@ -8,17 +8,14 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
-  LoggerService,
-  Inject,
-  Logger,
+  Req,
 } from '@nestjs/common';
 import * as fs from 'fs';
 import { UploadService } from './upload.service';
-import { CreateUploadDto } from './dto/create-upload.dto';
 import { UpdateUploadDto } from './dto/update-upload.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { APP_LOGGER } from 'src/common/constants';
 import { AppLogger } from '../logger/LoggingModule';
+import { createWriteStream } from 'fs';
 
 @Controller('upload')
 export class UploadController {
@@ -28,14 +25,16 @@ export class UploadController {
   ) {}
 
   @Post('photo')
-  @UseInterceptors(FileInterceptor('file', {}))
+  @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file) {
-    this.logger.log('This is a log message');
-    this.logger.warn('This is a warning message');
-    this.logger.error('This is an error message', 'stack trace goes here');
-    this.logger.debug('This is debug file');
-    await writeFileToServer('uploads/' + file.originalname, file.buffer);
-    return 'upload';
+    const { originalname } = file;
+    const writeImage = createWriteStream(`uploads/${originalname}`);
+    writeImage.write(file.buffer);
+    writeImage.end();
+
+    return {
+      message: 'File uploaded successfully',
+    };
   }
 
   @Get()
