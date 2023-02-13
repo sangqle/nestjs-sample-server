@@ -16,7 +16,7 @@ import AppConfig from './config/app.config';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 import { UploadModule } from './modules/upload/upload.module';
 import { MulterModule } from '@nestjs/platform-express';
-import { AppLogger } from './modules/logger/LoggingModule';
+import { AppLogger } from './common/logger/LoggingModule';
 
 @Module({
   imports: [

@@ -1,4 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, Long, Unique } from 'typeorm';
+import { Role } from 'src/modules/roles/entities/role.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  Long,
+  Unique,
+  OneToMany,
+} from 'typeorm';
 @Entity()
 @Unique(['username'])
 export class User {
@@ -25,6 +33,9 @@ export class User {
 
   @Column()
   password: string;
+
+  @OneToMany(() => Role, (role) => role.user)
+  roles: Role[];
 
   toJSonResponse() {
     delete this['password'];

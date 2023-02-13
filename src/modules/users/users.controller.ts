@@ -9,12 +9,15 @@ import {
   ParseIntPipe,
   Post,
   Query,
+  Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -41,9 +44,26 @@ export class UsersController {
     });
   }
 
+  @Get('info')
+  @UseGuards(JwtAuthGuard)
+  async getMyUserInfo(@Req() req: Request, @Res() res: Response) {
+    console.log('user: ', req.user);
+    return res.status(HttpStatus.OK).json({
+      msg: 'ok',
+    });
+  }
+
   @Get(':id')
-  async getByUserId(@Param('id') id: number, @Res() res: Response) {
+  async getByUserId(
+    @Param('id', ParseIntPipe) id: number,
+    @Res() res: Response,
+  ) {
     const user: User = await this.userService.findOneById(id);
+    if (!user) {
+      return res.status(HttpStatus.NOT_FOUND).json({
+        msg: 'User not found',
+      });
+    }
     return res.status(HttpStatus.OK).json({
       msg: 'ok',
       user: user.toJSonResponse(),
