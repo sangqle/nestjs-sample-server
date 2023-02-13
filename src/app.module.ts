@@ -1,5 +1,4 @@
 import {
-  Injectable,
   MiddlewareConsumer,
   Module,
   NestModule,
@@ -17,6 +16,7 @@ import AppConfig from './config/app.config';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 import { UploadModule } from './modules/upload/upload.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { AppLogger } from './modules/logger/LoggingModule';
 
 @Module({
   imports: [
@@ -45,7 +45,8 @@ import { MulterModule } from '@nestjs/platform-express';
     AuthModule,
     UploadModule,
   ],
-  providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }],
+  providers: [AppLogger, { provide: APP_GUARD, useClass: JwtAuthGuard }],
+  exports: [AppLogger],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
