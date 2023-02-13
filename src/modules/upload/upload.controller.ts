@@ -9,6 +9,7 @@ import {
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
+import * as fs from 'fs';
 import { UploadService } from './upload.service';
 import { CreateUploadDto } from './dto/create-upload.dto';
 import { UpdateUploadDto } from './dto/update-upload.dto';
@@ -18,10 +19,10 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 
-  @Post('file')
-  @UseInterceptors(FileInterceptor('file'))
-  uploadFile(@UploadedFile() file: Express.Multer.File): void {
-    console.log(file);
+  @Post('photo')
+  @UseInterceptors(FileInterceptor('file', {}))
+  async uploadFile(@UploadedFile() file) {
+    await writeFileToServer('uploads/' + file.originalname, file.buffer);
   }
 
   @Get()
@@ -43,4 +44,19 @@ export class UploadController {
   remove(@Param('id') id: string) {
     return this.uploadService.remove(+id);
   }
+}
+
+async function writeFileToServer(
+  filename: string,
+  file: Buffer,
+): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    fs.writeFile(filename, file, (error) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
+  });
 }

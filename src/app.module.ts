@@ -16,6 +16,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import AppConfig from './config/app.config';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 import { UploadModule } from './modules/upload/upload.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -35,6 +36,9 @@ import { UploadModule } from './modules/upload/upload.module';
         return configService.get<MysqlConnectionOptions>('database');
       },
       inject: [ConfigService],
+    }),
+    MulterModule.register({
+      dest: './uploads',
     }),
     UsersModule,
     PostsModule,
