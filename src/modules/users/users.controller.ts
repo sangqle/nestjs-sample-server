@@ -1,10 +1,14 @@
 import {
+  BadRequestException,
   Body,
   Controller,
+  DefaultValuePipe,
   Get,
   HttpStatus,
   Param,
+  ParseIntPipe,
   Post,
+  Query,
   Res,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
@@ -17,12 +21,23 @@ export class UsersController {
   constructor(private userService: UsersService) {}
 
   @Get()
-  async findAll(@Res() res: Response) {
-    const users: User[] = await this.userService.findAll();
+  async findAll(
+    @Res() res: Response,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+  ) {
+    if (page < 1) {
+      throw new BadRequestException('Invalid page number');
+    }
+    if (limit < 1 || limit > 100) {
+      throw new BadRequestException('Invalid limit');
+    }
+    const [users, total] = await this.userService.findAll({ page, limit });
     const usersDto = users.map((user) => user.toJSonResponse());
     return res.status(HttpStatus.OK).json({
       msg: 'ok',
       users: usersDto,
+      total,
     });
   }
 

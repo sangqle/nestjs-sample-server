@@ -39,7 +39,14 @@ export class UsersService {
     });
   }
 
-  async findAll(): Promise<User[]> {
-    return this.usersRepository.find();
+  async findAll({
+    page = 1,
+    limit = 10,
+  }: { page?: number; limit?: number } = {}): Promise<[User[], number]> {
+    const [users, total] = await this.usersRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+    return [users, total];
   }
 }
