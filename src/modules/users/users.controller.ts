@@ -52,7 +52,6 @@ export class UsersController {
   @Get('info')
   @Roles(Role.Admin)
   async getMyUserInfo(@Req() req: Request, @Res() res: Response) {
-    console.log('user: ', req.user);
     return res.status(HttpStatus.OK).json({
       msg: 'ok',
     });

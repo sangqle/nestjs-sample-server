@@ -10,7 +10,6 @@ export class UserRepository extends Repository<User> {
   }
 
   async findByIdWithRoles(id: number): Promise<User> {
-    console.log('call method here');
     const query = this.createQueryBuilder('user')
       .leftJoinAndSelect('user.roles', 'role')
       .where('user.id = :id', { id })

@@ -23,7 +23,6 @@ export class UsersService {
       user.updated_at = new Date().getTime();
       user.is_deleted = false;
       user = await this.userRepository.save(user);
-      console.log('user: ', user);
     } catch (error) {
       console.log(error);
       user = null;
