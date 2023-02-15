@@ -20,8 +20,10 @@ import { User } from './entities/user.entity';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles } from 'src/decorators/role/roles.decorator';
 import { Role } from 'src/enums/role.enum';
+import { RolesGuard } from 'src/decorators/role/roles.guard';
 
 @Controller('users')
+@UseGuards(RolesGuard)
 export class UsersController {
   constructor(private userService: UsersService) {}
 
@@ -48,7 +50,7 @@ export class UsersController {
   }
 
   @Get('info')
-  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   async getMyUserInfo(@Req() req: Request, @Res() res: Response) {
     console.log('user: ', req.user);
     return res.status(HttpStatus.OK).json({

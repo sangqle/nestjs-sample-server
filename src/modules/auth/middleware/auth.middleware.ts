@@ -33,12 +33,11 @@ export class AuthMiddleware implements NestMiddleware {
         accessToken,
         this.configService.get<string>('JWT_SECRET'),
       );
-      const username = payload.sub;
-      const user = await this.userService.findOneByUsername(username);
+      const id = payload.sub;
+      const user = await this.userService.findOneById(id);
       if (!user) {
         throw new ForbiddenException('Invalid toke, maybe user is disable');
       }
-      req.user = user;
     } catch (error) {
       this.logger.error(error);
       throw new ForbiddenException(error.message);

@@ -11,12 +11,12 @@ export class AuthService {
   ) {}
 
   async login(auth: CreateAuthDto) {
-    const user = this.usersService.findOneByUsername(auth.username);
+    const user = await this.usersService.findOneByUsername(auth.username);
     if (!user) {
       return null;
     }
     // Compare passwork here
-    const payload = { sub: auth.username };
+    const payload = { sub: user.id };
     return {
       access_token: this.jwtService.sign(payload, null),
     };

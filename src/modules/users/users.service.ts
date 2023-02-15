@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
+import { UserRepository } from './repository/user.repository';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User)
-    private readonly usersRepository: Repository<User>,
+    @InjectRepository(UserRepository)
+    private readonly userRepository: UserRepository,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -22,7 +22,7 @@ export class UsersService {
       user.password = createUserDto.password;
       user.updated_at = new Date().getTime();
       user.is_deleted = false;
-      user = await this.usersRepository.save(user);
+      user = await this.userRepository.save(user);
       console.log('user: ', user);
     } catch (error) {
       console.log(error);
@@ -32,7 +32,7 @@ export class UsersService {
   }
 
   async findOneById(id) {
-    return this.usersRepository.findOne({
+    return this.userRepository.findOne({
       where: {
         id,
       },
@@ -40,18 +40,22 @@ export class UsersService {
   }
 
   async findOneByUsername(username) {
-    return this.usersRepository.findOne({
+    return this.userRepository.findOne({
       where: {
         username,
       },
     });
   }
 
+  async findByIdWithRoles(id: number): Promise<User> {
+    return await this.userRepository.findByIdWithRoles(id);
+  }
+
   async findAll({
     page = 1,
     limit = 10,
   }: { page?: number; limit?: number } = {}): Promise<[User[], number]> {
-    const [users, total] = await this.usersRepository.findAndCount({
+    const [users, total] = await this.userRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
     });
