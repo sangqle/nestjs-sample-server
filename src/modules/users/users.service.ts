@@ -39,6 +39,14 @@ export class UsersService {
     });
   }
 
+  async findOneByUsername(username) {
+    return this.usersRepository.findOne({
+      where: {
+        username,
+      },
+    });
+  }
+
   async findAll({
     page = 1,
     limit = 10,

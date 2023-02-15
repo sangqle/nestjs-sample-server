@@ -18,12 +18,15 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Roles } from 'src/decorators/role/roles.decorator';
+import { Role } from 'src/enums/role.enum';
 
 @Controller('users')
 export class UsersController {
   constructor(private userService: UsersService) {}
 
   @Get()
+  @Roles(Role.Admin)
   async findAll(
     @Res() res: Response,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,

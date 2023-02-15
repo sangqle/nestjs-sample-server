@@ -1,6 +1,9 @@
 import { ForbiddenException, Injectable, NestMiddleware } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { verify } from 'jsonwebtoken';
+import { AppLogger } from 'src/common/logger/LoggingModule';
 import { UsersService } from '../../users/users.service';
+import { AuthService } from '../auth.service';
 
 /** The AuthMiddleware is used to
  * (1) read the request header bearer token/user access token
@@ -8,7 +11,11 @@ import { UsersService } from '../../users/users.service';
  */
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
-  constructor(private readonly userService: UsersService) {}
+  constructor(
+    private readonly userService: UsersService,
+    private readonly logger: AppLogger,
+    private readonly configService: ConfigService,
+  ) {}
   async use(
     req: Request | any,
     res: Response | any,
@@ -16,22 +23,25 @@ export class AuthMiddleware implements NestMiddleware {
   ) {
     const bearerHeader = req.headers.authorization;
     const accessToken = bearerHeader && bearerHeader.split(' ')[1];
-    let user;
 
     if (!bearerHeader || !accessToken) {
       return next();
     }
 
     try {
-      const payload = verify(accessToken, 'this_is_secret');
-      const id = payload;
-      user = await this.userService.findOneById({ id });
-    } catch (error) {
-      console.log('error: ', error);
-      throw new ForbiddenException('Please register or sign in.');
-    }
-    if (user) {
+      const payload = verify(
+        accessToken,
+        this.configService.get<string>('JWT_SECRET'),
+      );
+      const username = payload.sub;
+      const user = await this.userService.findOneByUsername(username);
+      if (!user) {
+        throw new ForbiddenException('Invalid toke, maybe user is disable');
+      }
       req.user = user;
+    } catch (error) {
+      this.logger.error(error);
+      throw new ForbiddenException(error.message);
     }
     next();
   }
