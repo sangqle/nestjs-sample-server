@@ -5,20 +5,20 @@ import { UsersModule } from '../users/users.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     UsersModule,
     PassportModule,
     JwtModule.registerAsync({
+      imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
-        const count = configService.get<number>('JWT_TTL');
+        const expiresIn = configService.get<string>('JWT_EXPIRES');
         const secret = configService.get<string>('JWT_SECRET');
-        console.log('count: ', count);
         return {
           secret,
-          signOptions: { expiresIn: count },
+          signOptions: { expiresIn },
         };
       },
       inject: [ConfigService],
