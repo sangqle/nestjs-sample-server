@@ -14,21 +14,15 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    let user = null;
-    try {
-      user = new User();
-      user.user_id = createUserDto.userId;
-      user.username = createUserDto.username;
-      user.email = createUserDto.email;
-      user.phone_number = createUserDto.phoneNumber;
-      user.password = createUserDto.password;
-      user.updated_at = new Date().getTime();
-      user.is_deleted = false;
-      user = await this.userRepository.save(user);
-    } catch (error) {
-      this.logger.error(error);
-      user = null;
-    }
+    let user = new User();
+    user.user_id = createUserDto.userId;
+    user.username = createUserDto.username;
+    user.email = createUserDto.email;
+    user.phone_number = createUserDto.phoneNumber;
+    user.password = createUserDto.password;
+    user.updated_at = new Date().getTime();
+    user.is_deleted = false;
+    user = await this.userRepository.save(user);
     return user;
   }
 

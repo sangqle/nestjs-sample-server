@@ -27,7 +27,9 @@ export class User {
   @Column()
   phone_number: string;
 
-  @Column()
+  @Column({
+    type: 'bigint',
+  })
   updated_at: number;
 
   @Column()
