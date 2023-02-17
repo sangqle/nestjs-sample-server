@@ -17,16 +17,15 @@ import { Request, Response } from 'express';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles } from 'src/decorators/role/roles.decorator';
 import { Role } from 'src/enums/role.enum';
 import { RolesGuard } from 'src/decorators/role/roles.guard';
+import { SkipAuth } from 'src/decorators/public.decorators';
 
 @Controller('users')
 @UseGuards(RolesGuard)
 export class UsersController {
   constructor(private userService: UsersService) {}
-
   @Get()
   @Roles(Role.Admin)
   async findAll(
@@ -50,7 +49,7 @@ export class UsersController {
   }
 
   @Get('info')
-  @Roles(Role.Admin)
+  @Roles(Role.User)
   async getMyUserInfo(@Req() req: Request, @Res() res: Response) {
     return res.status(HttpStatus.OK).json({
       msg: 'ok',
@@ -74,6 +73,7 @@ export class UsersController {
     });
   }
 
+  @SkipAuth()
   @Post()
   async creatUser(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
     const user = await this.userService.create(createUserDto);

@@ -1,11 +1,13 @@
 import { Role } from 'src/modules/roles/entities/role.entity';
+import * as bcrypt from 'bcryptjs';
+
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  Long,
   Unique,
   OneToMany,
+  BeforeInsert,
 } from 'typeorm';
 @Entity()
 @Unique(['username'])
@@ -36,6 +38,11 @@ export class User {
 
   @OneToMany(() => Role, (role) => role.user)
   roles: Role[];
+
+  @BeforeInsert()
+  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
 
   toJSonResponse() {
     delete this['password'];

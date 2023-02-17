@@ -26,6 +26,11 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+
+## What is inside this project
+### 1. Implement simple logging, authentication, datasource
+### 2. Authorization
+### 3.
 ## Installation
 
 ```bash

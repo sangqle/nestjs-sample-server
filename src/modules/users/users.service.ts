@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { AppLogger } from 'src/common/logger/LoggingModule';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import { UserRepository } from './repository/user.repository';
@@ -9,6 +10,7 @@ export class UsersService {
   constructor(
     @InjectRepository(UserRepository)
     private readonly userRepository: UserRepository,
+    private readonly logger: AppLogger,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -24,7 +26,7 @@ export class UsersService {
       user.is_deleted = false;
       user = await this.userRepository.save(user);
     } catch (error) {
-      console.log(error);
+      this.logger.error(error);
       user = null;
     }
     return user;
