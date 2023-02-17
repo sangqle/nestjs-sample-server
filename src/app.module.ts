@@ -1,9 +1,4 @@
-import {
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-  RequestMethod,
-} from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { PostsModule } from './modules/posts/posts.module';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
@@ -13,7 +8,6 @@ import { JwtAuthGuard } from './modules/auth/jwt-auth.guard';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import AppConfig from './config/app.config';
-import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 import { UploadModule } from './modules/upload/upload.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { AppLogger } from './common/logger/LoggingModule';
@@ -31,9 +25,7 @@ import { AppLogger } from './common/logger/LoggingModule';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
-        const db = configService.get<MysqlConnectionOptions>('database');
-        console.log('database config: ', db);
-        return configService.get<MysqlConnectionOptions>('database');
+        return configService.get('database');
       },
       inject: [ConfigService],
     }),
@@ -52,6 +44,6 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      .forRoutes({ path: '*', method: RequestMethod.ALL });
+      .forRoutes('auth/*', 'users/*', 'posts/*', 'upload/*');
   }
 }
