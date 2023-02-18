@@ -12,6 +12,7 @@ export class AuthService {
 
   async login(auth: CreateAuthDto) {
     const user = await this.usersService.findOneByUsername(auth.username);
+    console.log('user: , ', user);
     if (!user) {
       return null;
     }
