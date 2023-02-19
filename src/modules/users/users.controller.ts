@@ -13,7 +13,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
@@ -21,6 +21,7 @@ import { Roles } from 'src/decorators/role/roles.decorator';
 import { Role } from 'src/enums/role.enum';
 import { RolesGuard } from 'src/decorators/role/roles.guard';
 import { SkipAuth } from 'src/decorators/public.decorators';
+import { AuthenticatedRequest } from 'src/interfaces/authenticated.interface';
 
 @Controller('users')
 @UseGuards(RolesGuard)
@@ -40,19 +41,20 @@ export class UsersController {
       throw new BadRequestException('Invalid limit');
     }
     const [users, total] = await this.userService.findAll({ page, limit });
-    const usersDto = users.map((user) => user.toJSonResponse());
     return res.status(HttpStatus.OK).json({
       msg: 'ok',
-      users: usersDto,
+      users,
       total,
     });
   }
 
   @Get('info')
-  @Roles(Role.User)
-  async getMyUserInfo(@Req() req: Request, @Res() res: Response) {
+  @Roles(Role.User, Role.Admin)
+  async getMyUserInfo(@Req() req: AuthenticatedRequest, @Res() res: Response) {
+    const user: User = req.userInfo;
     return res.status(HttpStatus.OK).json({
       msg: 'ok',
+      user,
     });
   }
 
@@ -69,7 +71,7 @@ export class UsersController {
     }
     return res.status(HttpStatus.OK).json({
       msg: 'ok',
-      user: user.toJSonResponse(),
+      user,
     });
   }
 
@@ -83,7 +85,7 @@ export class UsersController {
       });
     }
     return res.status(HttpStatus.OK).json({
-      user: user.toJSonResponse(),
+      user,
       msg: 'ok',
     });
   }

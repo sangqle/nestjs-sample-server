@@ -9,6 +9,8 @@ import {
   OneToMany,
   BeforeInsert,
 } from 'typeorm';
+import { Exclude, instanceToPlain } from 'class-transformer';
+
 @Entity()
 @Unique(['username'])
 export class User {
@@ -33,9 +35,11 @@ export class User {
   updated_at: number;
 
   @Column()
+  @Exclude()
   is_deleted: boolean;
 
   @Column()
+  @Exclude()
   password: string;
 
   @OneToMany(() => Role, (role) => role.user)
@@ -46,9 +50,7 @@ export class User {
     this.password = await bcrypt.hash(this.password, 10);
   }
 
-  toJSonResponse() {
-    delete this['password'];
-    delete this['is_deleted'];
-    return this;
+  toJSON() {
+    return instanceToPlain(this);
   }
 }

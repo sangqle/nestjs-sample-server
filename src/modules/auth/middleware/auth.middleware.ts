@@ -2,13 +2,15 @@ import { ForbiddenException, Injectable, NestMiddleware } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { verify } from 'jsonwebtoken';
 import { AppLogger } from 'src/common/logger/LoggingModule';
+import { AuthenticatedRequest } from 'src/interfaces/authenticated.interface';
+import { User } from 'src/modules/users/entities/user.entity';
 import { UsersService } from '../../users/users.service';
-import { AuthService } from '../auth.service';
 
 /** The AuthMiddleware is used to
  * (1) read the request header bearer token/user access token
  * (2) decrypt the access token to get the user object
  */
+
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
   constructor(
@@ -17,7 +19,7 @@ export class AuthMiddleware implements NestMiddleware {
     private readonly configService: ConfigService,
   ) {}
   async use(
-    req: Request | any,
+    req: AuthenticatedRequest | any,
     res: Response | any,
     next: (error?: any) => void,
   ) {
@@ -34,10 +36,11 @@ export class AuthMiddleware implements NestMiddleware {
         this.configService.get<string>('JWT_SECRET'),
       );
       const id = payload.sub;
-      const user = await this.userService.findOneById(id);
+      const user: User = await this.userService.findOneById(id);
       if (!user) {
         throw new ForbiddenException('Invalid toke, maybe user is disable');
       }
+      req.userInfo = user;
     } catch (error) {
       this.logger.error(error);
       throw new ForbiddenException(error.message);
