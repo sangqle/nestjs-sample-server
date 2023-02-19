@@ -29,8 +29,8 @@
 
 ## What is inside this project
 ### 1. Implement simple logging, authentication, datasource
-### 2. Authorization
-### 3.
+### 2. Authorization, Handle filter exceptions
+### 3. Get logs files, and show log of server
 ## Installation
 
 ```bash

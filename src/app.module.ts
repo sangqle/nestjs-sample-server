@@ -12,9 +12,15 @@ import { UploadModule } from './modules/upload/upload.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { AppLogger } from './common/logger/LoggingModule';
 import { AllExceptionsFilter } from './common/filter/exceptions.filter';
+import { LogsModule } from './modules/logs/logs.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, 'logs'),
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [
@@ -38,6 +44,7 @@ import { AllExceptionsFilter } from './common/filter/exceptions.filter';
     PostsModule,
     AuthModule,
     UploadModule,
+    LogsModule,
   ],
   providers: [
     AppLogger,

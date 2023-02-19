@@ -19,7 +19,6 @@ export class AuthController {
   @SkipAuth()
   @Post('auth/login')
   async login(@Body() createAuth: CreateAuthDto, @Res() res: Response) {
-    console.log('Call login here');
     const jwt = await this.authService.login(createAuth);
     res.status(HttpStatus.OK).json({
       msg: 'ok',

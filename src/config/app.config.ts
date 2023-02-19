@@ -9,4 +9,7 @@ export default () => ({
   database: {
     ...MySqlDatabaseConfig(),
   },
+  host: process.env.HOST || 'http://locahost',
+  port: process.env.PORT || 8080,
+  logs_path: 'logs',
 });
