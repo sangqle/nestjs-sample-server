@@ -28,15 +28,21 @@
 
 
 ## What is inside this project
-### 1. Implement simple logging, authentication, datasource
-### 2. Authorization, Handle filter exceptions
-### 3. Get logs files, and show log of server
+### 1. Logger, Exception Filtering
+### 2. Datasouce with Mysql
+### 3. Authorization base Jwt and Roles
+
+
 ## Installation
 
 ```bash
 $ yarn install
 ```
 
+## Setup docker container
+```bash
+$ docker-compose up -d
+```
 ## Running the app
 
 ```bash
