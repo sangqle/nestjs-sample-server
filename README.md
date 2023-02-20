@@ -26,12 +26,31 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+---
 
 ## What is inside this project
 ### 1. Logger, Exception Filtering
 ### 2. Datasouce with Mysql
 ### 3. Authorization base Jwt and Roles
 
+---
+
+## APIs:
+
+GET /logs
+
+GET /logs/:filename
+
+GET /auth/login
+```json
+{"username": "sangle", "password": "sanglq3"}
+```
+
+GET /users
+
+GET /users/info
+
+---
 
 ## Installation
 
@@ -68,7 +87,7 @@ $ yarn run test:e2e
 # test coverage
 $ yarn run test:cov
 ```
-
+---
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
