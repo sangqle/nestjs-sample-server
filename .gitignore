@@ -33,5 +33,9 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
+<<<<<<< HEAD
 development.env
 production.env
+=======
+mysql-data
+>>>>>>> 174b8fb7425d3cfcf2cd7f41630c326ce07a4702
