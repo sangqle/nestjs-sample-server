@@ -39,6 +39,10 @@ $ yarn install
 
 ## Running the app
 
+``bash
+$ cp .sample.env development.env
+```
+
 ```bash
 # development
 $ yarn run start

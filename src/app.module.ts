@@ -23,9 +23,7 @@ import { join } from 'path';
     }),
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: [
-        `${process.cwd()}/src/config/env/${process.env.NODE_ENV}.env`,
-      ],
+      envFilePath: [`${process.cwd()}/${process.env.NODE_ENV}.env`],
       load: [AppConfig],
       expandVariables: true,
     }),
