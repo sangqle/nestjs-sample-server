@@ -42,7 +42,7 @@ export class UsersService {
     });
   }
 
-  async findByIdWithRoles(id: number): Promise<User> {
+  async findByIdWithRoles(id): Promise<User> {
     return await this.userRepository.findByIdWithRoles(id);
   }
 

@@ -36,7 +36,7 @@ export class AuthMiddleware implements NestMiddleware {
         this.configService.get<string>('JWT_SECRET'),
       );
       const id = payload.sub;
-      const user: User = await this.userService.findOneById(id);
+      const user: User = await this.userService.findByIdWithRoles(id);
       if (!user) {
         throw new ForbiddenException('Invalid toke, maybe user is disable');
       }

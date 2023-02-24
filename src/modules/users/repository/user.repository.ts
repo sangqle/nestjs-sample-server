@@ -8,7 +8,7 @@ export class UserRepository extends Repository<User> {
     super(User, dataSource.createEntityManager());
   }
 
-  async findByIdWithRoles(id: number): Promise<User> {
+  async findByIdWithRoles(id): Promise<User> {
     const query = this.createQueryBuilder('user')
       .leftJoinAndSelect('user.roles', 'role')
       .where('user.id = :id', { id })
