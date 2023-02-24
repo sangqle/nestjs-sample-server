@@ -8,9 +8,7 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
-  Req,
 } from '@nestjs/common';
-import * as fs from 'fs';
 import { UploadService } from './upload.service';
 import { UpdateUploadDto } from './dto/update-upload.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -56,19 +54,4 @@ export class UploadController {
   remove(@Param('id') id: string) {
     return this.uploadService.remove(+id);
   }
-}
-
-async function writeFileToServer(
-  filename: string,
-  file: Buffer,
-): Promise<void> {
-  return new Promise<void>((resolve, reject) => {
-    fs.writeFile(filename, file, (error) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve();
-      }
-    });
-  });
 }

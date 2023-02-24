@@ -7,7 +7,6 @@ import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './modules/auth/jwt-auth.guard';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import AppConfig from './config/app.config';
 import { UploadModule } from './modules/upload/upload.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { AppLogger } from './common/logger/LoggingModule';
@@ -15,6 +14,8 @@ import { AllExceptionsFilter } from './common/filter/exceptions.filter';
 import { LogsModule } from './modules/logs/logs.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+
+import AppConfig from './config/app.config';
 
 @Module({
   imports: [
