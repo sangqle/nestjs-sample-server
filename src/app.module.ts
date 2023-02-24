@@ -9,7 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UploadModule } from './modules/upload/upload.module';
 import { MulterModule } from '@nestjs/platform-express';
-import { AppLogger } from './common/logger/LoggingModule';
+import { AppLogger } from './common/logger/app.logger';
 import { AllExceptionsFilter } from './common/filter/exceptions.filter';
 import { LogsModule } from './modules/logs/logs.module';
 import { ServeStaticModule } from '@nestjs/serve-static';

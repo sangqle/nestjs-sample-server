@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable, NestMiddleware } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { verify } from 'jsonwebtoken';
-import { AppLogger } from 'src/common/logger/LoggingModule';
+import { AppLogger } from 'src/common/logger/app.logger';
 import { AuthenticatedRequest } from 'src/interfaces/authenticated.interface';
 import { User } from 'src/modules/users/entities/user.entity';
 import { UsersService } from '../../users/users.service';

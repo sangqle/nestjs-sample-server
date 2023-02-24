@@ -12,7 +12,7 @@ import {
 import { UploadService } from './upload.service';
 import { UpdateUploadDto } from './dto/update-upload.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { AppLogger } from '../../common/logger/LoggingModule';
+import { AppLogger } from '../../common/logger/app.logger';
 import { createWriteStream } from 'fs';
 
 @Controller('upload')

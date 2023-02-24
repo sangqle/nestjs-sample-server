@@ -14,7 +14,7 @@ import { CreateLogDto } from './dto/create-log.dto';
 import * as fs from 'fs';
 import { FileService } from './file.service';
 import { ConfigService } from '@nestjs/config';
-import { AppLogger } from 'src/common/logger/LoggingModule';
+import { AppLogger } from 'src/common/logger/app.logger';
 import { RolesGuard } from 'src/decorators/role/roles.guard';
 import { Roles } from 'src/decorators/role/roles.decorator';
 import { Role } from 'src/enums/role.enum';

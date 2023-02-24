@@ -7,8 +7,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { RolesGuard } from 'src/common/roles/RolesGuard';
 import { SkipAuth } from 'src/decorators/public.decorators';
+import { RolesGuard } from 'src/decorators/role/roles.guard';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 @Controller()
