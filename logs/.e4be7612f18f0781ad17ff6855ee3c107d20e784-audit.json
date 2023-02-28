@@ -29,6 +29,11 @@
             "date": 1677197075413,
             "name": "logs/debug-2023-02-24.log",
             "hash": "0cc2e193291d0b52b1116834d6002b01a035e6cd9521b63e90a8b53c8febd8c2"
+        },
+        {
+            "date": 1677557781140,
+            "name": "logs/debug-2023-02-28.log",
+            "hash": "0b0f62fe18dffc32d040d1802e6e99479d3d81267daef3d49f6a8528fd0b2c82"
         }
     ],
     "hashType": "sha256"

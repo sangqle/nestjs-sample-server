@@ -10,6 +10,7 @@ services:
       MYSQL_DATABASE: mydatabase
     volumes:
       - ./mysql-data:/var/lib/mysql
+      - ./docker/create-database.sql:/docker-entrypoint-initdb.d/create-database.sql
     ports:
       - 3306:3306
 
