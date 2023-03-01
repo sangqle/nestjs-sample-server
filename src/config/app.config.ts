@@ -14,4 +14,5 @@ export default () => ({
   logs_path: 'logs',
   g_client_id: process.env.GOOGLE_CLIENT_ID,
   g_client_secret: process.env.GOOGLE_CLIENT_SECRET,
+  g_oath_callback: process.env.GOOGLE_OAUTH_CALLBACK,
 });
