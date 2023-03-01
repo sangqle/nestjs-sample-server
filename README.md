@@ -32,6 +32,31 @@
 ### 1. Logger, Exception Filtering
 ### 2. Datasouce with Mysql
 ### 3. Authorization base Jwt and Roles
+### 3. Authorization with Google
+
+### 4. Connect to wallet (Maybe in oath2-web3 branch)
+
+---
+
+
+# Required
+
+- MySql database that must has 'test' database (follow docker-compose below to init tmp db)
+- (Optional) Google console account to authorization via Google
+
+---
+
+## Set up your Google OAuth
+
+Go to the Google Cloud Console to get your key and add these to env file
+
+```bash
+GOOGLE_CLIENT_ID=<your_client_key_here>
+GOOGLE_CLIENT_SECRET=<your_client_secret_here>
+GOOGLE_OAUTH_CALLBACK=http://localhost:8080/auth/google/callback
+```
+
+
 
 ---
 
