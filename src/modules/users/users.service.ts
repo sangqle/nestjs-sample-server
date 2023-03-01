@@ -25,6 +25,34 @@ export class UsersService {
     user = await this.userRepository.save(user);
     return user;
   }
+  g;
+
+  async createGoogleUser({ username, email, googleId }) {
+    try {
+      console.log({ username, email, googleId });
+      let user = new User();
+      user.username = username;
+      user.email = email;
+      user.phone_number = '';
+      user.password = googleId;
+      user.updated_at = new Date().getTime();
+      user.is_deleted = false;
+      user.google_id = googleId;
+      user = await this.userRepository.save(user);
+      return user;
+    } catch (error) {
+      this.logger.error(error.message, error);
+      throw new Error(error.message);
+    }
+  }
+
+  async findUserByEmail(email): Promise<User> {
+    return this.userRepository.findOne({
+      where: {
+        email,
+      },
+    });
+  }
 
   async findOneById(id): Promise<User> {
     return this.userRepository.findOne({
@@ -55,5 +83,9 @@ export class UsersService {
       take: limit,
     });
     return [users, total];
+  }
+
+  async findByGoogleId(id): Promise<User> {
+    return null;
   }
 }

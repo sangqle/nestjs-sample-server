@@ -3,6 +3,9 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import * as bcrypt from 'bcrypt';
+import { CreateUserDto } from '../users/dto/create-user.dto';
+import { User } from '../users/entities/user.entity';
+import { VerifiedCallback } from 'passport-jwt';
 
 @Injectable()
 export class AuthService {
@@ -26,8 +29,42 @@ export class AuthService {
     };
   }
 
-  async validateGoogleUser(profile) {
-    console.log('Google profile: ', profile);
-    return true;
+  async validateGoogleUser(
+    validatedUser,
+    done: VerifiedCallback,
+  ): Promise<void> {
+    let user = await this.usersService.findUserByEmail(validatedUser.email);
+    // create new user
+    if (!user) {
+      const { email, googleId } = validatedUser;
+      const username = email.split('@')[0];
+      user = await this.usersService.createGoogleUser({
+        username,
+        email,
+        googleId,
+      });
+    }
+
+    // call done function with user object and null for error argument
+    done(null, user);
+  }
+
+  async genToken(user) {
+    const payload = { sub: user.id };
+    return {
+      access_token: this.jwtService.sign(payload, null),
+    };
+  }
+
+  async googleLogin(validatedUser) {
+    const { id, emails, name } = validatedUser;
+    const user = await this.usersService.findOneById(id);
+    if (!user) {
+      return null;
+    }
+    const jwt = await this.jwtService.sign({ sub: user.id });
+    return {
+      jwt,
+    };
   }
 }

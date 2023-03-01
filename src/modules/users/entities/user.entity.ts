@@ -17,7 +17,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   user_id: number;
 
   @Column()
@@ -26,7 +26,7 @@ export class User {
   @Column()
   username: string;
 
-  @Column()
+  @Column({ nullable: true })
   phone_number: string;
 
   @Column({
@@ -38,9 +38,12 @@ export class User {
   @Exclude()
   is_deleted: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   @Exclude()
   password: string;
+
+  @Column({ nullable: true })
+  google_id: string;
 
   @OneToMany(() => Role, (role) => role.user)
   roles: Role[];

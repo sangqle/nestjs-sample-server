@@ -8,4 +8,5 @@ export class CreateUserDto {
   updatedAt: number;
   isDeleted: boolean;
   password: string;
+  googleId: string;
 }

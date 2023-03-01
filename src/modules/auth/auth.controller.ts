@@ -34,15 +34,24 @@ export class AuthController {
   @Get('auth/google')
   @UseGuards(AuthGuard('google'))
   async googleAuth() {
-    return 'Hello google auth';
     // The user will be redirected to Google for authentication, so this route doesn't need to return anything
   }
 
   @Get('auth/google/callback')
   @UseGuards(AuthGuard('google'))
-  async googleAuthCallback(@Req() req) {
-    console.log(req.user);
-    return { message: 'Login successful' };
+  async googleLoginCallback(@Req() req) {
+    const user = req.user;
+    console.log('user: ', req.user);
+    const token = await this.authService.googleLogin(user);
+    if (!token) {
+      return {
+        msg: 'Invalid credential',
+      };
+    }
+    return {
+      user,
+      ...token,
+    };
   }
 
   @Get('profile')
