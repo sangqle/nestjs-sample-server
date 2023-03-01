@@ -53,9 +53,4 @@ export class AuthController {
       ...token,
     };
   }
-
-  @Get('profile')
-  async getProfile(@Req() req: Request) {
-    return { message: 'Profile retrieved successfully' };
-  }
 }
