@@ -5,6 +5,8 @@ import {
   Res,
   HttpStatus,
   UseGuards,
+  Get,
+  Req,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { SkipAuth } from 'src/decorators/public.decorators';
@@ -24,5 +26,21 @@ export class AuthController {
       msg: 'ok',
       jwt,
     });
+  }
+
+  @Get('auth/google')
+  async googleAuth() {
+    // The user will be redirected to Google for authentication, so this route doesn't need to return anything
+  }
+
+  @Get('auth/google/callback')
+  async googleAuthCallback(@Req() req) {
+    console.log(req.user);
+    return { message: 'Login successful' };
+  }
+
+  @Get('profile')
+  async getProfile(@Req() req: Request) {
+    return { message: 'Profile retrieved successfully' };
   }
 }

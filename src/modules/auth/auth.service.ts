@@ -25,4 +25,9 @@ export class AuthService {
       access_token: this.jwtService.sign(payload, null),
     };
   }
+
+  async validateGoogleUser(profile) {
+    console.log('Google profile: ', profile);
+    return true;
+  }
 }

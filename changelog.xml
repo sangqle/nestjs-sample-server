@@ -1,0 +1,49 @@
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+
+  <changeSet id="create-user-table" author="you">
+    <createTable tableName="user">
+      <column name="id" type="BIGINT" autoIncrement="true">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="user_id" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="email" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="username" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="phone_number" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="updated_at" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="is_deleted" type="BOOLEAN">
+        <constraints nullable="false"/>
+      </column>
+      <column name="password" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet id="add-username-unique-constraint" author="you">
+    <addUniqueConstraint tableName="user" columnNames="username"/>
+  </changeSet>
+
+  <changeSet id="add-foreign-key-role-user" author="you">
+    <addForeignKeyConstraint
+      baseTableName="role"
+      baseColumnNames="user_id"
+      referencedTableName="user"
+      referencedColumnNames="id"
+      constraintName="fk_role_user"
+    />
+  </changeSet>
+
+</databaseChangeLog>

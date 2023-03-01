@@ -62,6 +62,11 @@ $ yarn install
 ```bash
 $ docker-compose up -d
 ```
+
+## Run docker manually
+
+```bash
+```
 ## Running the app
 
 ``bash

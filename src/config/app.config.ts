@@ -12,4 +12,6 @@ export default () => ({
   host: process.env.HOST || 'http://locahost',
   port: process.env.PORT || 8080,
   logs_path: 'logs',
+  g_client_id: process.env.GOOGLE_CLIENT_ID,
+  g_client_secret: process.env.GOOGLE_CLIENT_SECRET,
 });
